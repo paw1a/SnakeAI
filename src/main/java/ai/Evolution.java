@@ -1,7 +1,7 @@
 package ai;
 
-import main.Const;
-import main.Snake;
+import snake.Const;
+import snake.Snake;
 
 import java.awt.*;
 import java.util.*;
@@ -14,7 +14,7 @@ public class Evolution {
     private boolean generationDone;
 
     public Evolution() {
-        population = new ArrayList<>();
+        population = new ArrayList<Snake>();
         for (int i = 0; i < Const.PARENTS_NUMBER; i++) {
             population.add(new Snake());
         }
@@ -60,10 +60,10 @@ public class Evolution {
 
     private Pair crossover(Pair pair) {
         double cross = Math.random();
-        if(cross < 0.5)
+        //if(cross < 0.5)
             return Operators.sbcCrossover(pair);
-        else
-            return new Pair(Operators.singlePointCrossover(pair), Operators.singlePointCrossover(pair));
+        /*else
+            return new Pair(Operators.singlePointCrossover(pair), Operators.singlePointCrossover(pair));*/
     }
 
     public void update() {

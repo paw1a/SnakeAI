@@ -1,7 +1,7 @@
 package ai;
 
-import main.Const;
-import main.Snake;
+import snake.Const;
+import snake.Snake;
 
 import java.util.*;
 
@@ -168,12 +168,12 @@ public class Operators {
     }
 
     public static Snake onePointRouletteWheel(List<Snake> snakes) {
-        /*Snake snake = null;
+        /*snake.Snake snake = null;
 
         double random = Math.random();
         double chanceSum = 0;
 
-        for(Map.Entry<main.Snake, Double> entry : map.entrySet()) {
+        for(Map.Entry<main.snake.Snake, Double> entry : map.entrySet()) {
             chanceSum += entry.getValue();
             if(random < chanceSum) {
                 snake = entry.getKey();

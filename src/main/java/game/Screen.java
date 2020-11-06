@@ -1,4 +1,4 @@
-package org.game.framework;
+package game;
 
 import java.awt.*;
 

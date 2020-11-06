@@ -1,4 +1,4 @@
-package org.game.framework.util;
+package game.util;
 
 public class Configuration {
     private int width, height;

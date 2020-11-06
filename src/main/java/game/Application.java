@@ -1,9 +1,9 @@
-package org.game.framework;
+package game;
 
-import org.game.framework.util.Configuration;
-import org.game.framework.util.Files;
-import org.game.framework.util.Game;
-import org.game.framework.util.Input;
+import game.util.Files;
+import game.util.Game;
+import game.util.Input;
+import game.util.Configuration;
 
 import javax.swing.*;
 import java.awt.*;

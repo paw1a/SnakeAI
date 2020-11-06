@@ -1,6 +1,6 @@
-package org.game.framework.util;
+package game.util;
 
-import org.game.framework.Application;
+import game.Application;
 
 public class Game {
     public static Configuration conf;

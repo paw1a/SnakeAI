@@ -1,11 +1,10 @@
-package main;
+package snake;
 
 import ai.NeuralNetwork;
-import org.game.framework.util.Game;
+import game.util.Game;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Snake {
@@ -223,9 +222,9 @@ public class Snake {
         g.setColor(Color.decode("#0C0B08"));
         g.setStroke(new BasicStroke(10f));
         for(Tile tile : snake) {
-            /*g.drawRect((int)tile.drawX + 40, (int)tile.drawY + 40, main.Const.TILE_SIZE, main.Const.TILE_SIZE);
-            g.fillRect((int)tile.drawX + main.Const.TILE_SIZE / 10 + 40, (int)tile.drawY + main.Const.TILE_SIZE / 10 + 40,
-                    main.Const.TILE_SIZE - 2*main.Const.TILE_SIZE/10, main.Const.TILE_SIZE - 2*main.Const.TILE_SIZE/10);*/
+            /*g.drawRect((int)tile.drawX + 40, (int)tile.drawY + 40, main.snake.Const.TILE_SIZE, main.snake.Const.TILE_SIZE);
+            g.fillRect((int)tile.drawX + main.snake.Const.TILE_SIZE / 10 + 40, (int)tile.drawY + main.snake.Const.TILE_SIZE / 10 + 40,
+                    main.snake.Const.TILE_SIZE - 2*main.snake.Const.TILE_SIZE/10, main.snake.Const.TILE_SIZE - 2*main.snake.Const.TILE_SIZE/10);*/
             g.drawRect(tile.x*Const.TILE_SIZE + 40, tile.y*Const.TILE_SIZE + 40, Const.TILE_SIZE, Const.TILE_SIZE);
             g.fillRect(tile.x*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40, tile.y*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40,
                     Const.TILE_SIZE - 2*Const.TILE_SIZE/10, Const.TILE_SIZE - 2*Const.TILE_SIZE/10);

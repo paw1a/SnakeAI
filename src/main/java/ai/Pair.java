@@ -1,6 +1,6 @@
 package ai;
 
-import main.Snake;
+import snake.Snake;
 
 public class Pair {
     public Snake parentA;

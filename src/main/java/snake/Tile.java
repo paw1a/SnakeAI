@@ -1,4 +1,4 @@
-package main;
+package snake;
 
 public class Tile {
     public int x, y;

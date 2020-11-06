@@ -1,8 +1,6 @@
-package main;
-
 import ai.Evolution;
-import org.game.framework.Screen;
-import org.game.framework.util.Game;
+import game.Screen;
+import game.util.Game;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
