@@ -28,7 +28,7 @@ public class Evolution {
         Map<Snake, Double> best = new LinkedHashMap<>();
         List<Snake> parents = new ArrayList<>();
 
-        for (int i = population.size()-1; i >= population.size()- Const.PARENTS_NUMBER; i--)
+        for (int i = population.size()-1; i >= population.size()-Const.PARENTS_NUMBER; i--)
             parents.add(population.get(i));
 
         double fitnessSum = parents.stream().mapToDouble(Snake::fitness).sum();
@@ -38,13 +38,20 @@ public class Evolution {
         population = new ArrayList<>();
         best.forEach((snake, aDouble) -> population.add(new Snake(snake.model)));
 
+        List<Snake> snakes = new ArrayList<>();
+        for(Map.Entry<Snake, Double> entry : best.entrySet())
+            snakes.add(entry.getKey());
+
+        Collections.shuffle(snakes);
+
         for (int i = 0; i < Const.CHILDREN_NUMBER/2; i++) {
-            Snake parentA = Operators.onePointRouletteWheel(best);
-            Snake parentB = Operators.onePointRouletteWheel(best);
+            Snake parentA = Operators.onePointRouletteWheel(snakes);
+            Snake parentB = Operators.onePointRouletteWheel(snakes);
             Pair children = crossover(new Pair(parentA, parentB));
             population.add(mutate(children.parentA));
             population.add(mutate(children.parentB));
         }
+        Collections.shuffle(population);
     }
 
     private Snake mutate(Snake snake) {

@@ -12,7 +12,7 @@ public class Operators {
         for (int i = 0; i < snake.model.weights1.length; i++)
             for (int j = 0; j < snake.model.weights1[i].length; j++) {
                 if (Math.random() < Const.MUTATION_RATE)
-                    snake.model.weights1[i][j] += rand.nextGaussian() * 0.2;
+                    snake.model.weights1[i][j] += rand.nextGaussian() * 0.4;
                 snake.model.weights1[i][j] = Math.max(-1.0, snake.model.weights1[i][j]);
                 snake.model.weights1[i][j] = Math.min(1.0, snake.model.weights1[i][j]);
             }
@@ -20,7 +20,7 @@ public class Operators {
         for (int i = 0; i < snake.model.weights2.length; i++)
             for (int j = 0; j < snake.model.weights2[i].length; j++) {
                 if (Math.random() < Const.MUTATION_RATE)
-                    snake.model.weights2[i][j] += rand.nextGaussian() * 0.2;
+                    snake.model.weights2[i][j] += rand.nextGaussian() * 0.4;
                 snake.model.weights2[i][j] = Math.max(-1.0, snake.model.weights2[i][j]);
                 snake.model.weights2[i][j] = Math.min(1.0, snake.model.weights2[i][j]);
             }
@@ -28,25 +28,25 @@ public class Operators {
         for (int i = 0; i < snake.model.weights3.length; i++)
             for (int j = 0; j < snake.model.weights3[i].length; j++) {
                 if (Math.random() < Const.MUTATION_RATE)
-                    snake.model.weights3[i][j] += rand.nextGaussian() * 0.2;
+                    snake.model.weights3[i][j] += rand.nextGaussian() * 0.4;
                 snake.model.weights3[i][j] = Math.max(-1.0, snake.model.weights3[i][j]);
                 snake.model.weights3[i][j] = Math.min(1.0, snake.model.weights3[i][j]);
             }
 
         for (int i = 0; i < snake.model.biases1.length; i++) {
-            if (Math.random() < Const.MUTATION_RATE) snake.model.biases1[i] += rand.nextGaussian() * 0.2;
+            if (Math.random() < Const.MUTATION_RATE) snake.model.biases1[i] += rand.nextGaussian() * 0.4;
             snake.model.biases1[i] = Math.max(-1.0, snake.model.biases1[i]);
             snake.model.biases1[i] = Math.min(1.0, snake.model.biases1[i]);
         }
 
         for (int i = 0; i < snake.model.biases2.length; i++) {
-            if (Math.random() < Const.MUTATION_RATE) snake.model.biases2[i] += rand.nextGaussian() * 0.2;
+            if (Math.random() < Const.MUTATION_RATE) snake.model.biases2[i] += rand.nextGaussian() * 0.4;
             snake.model.biases2[i] = Math.max(-1.0, snake.model.biases2[i]);
             snake.model.biases2[i] = Math.min(1.0, snake.model.biases2[i]);
         }
 
         for (int i = 0; i < snake.model.biases3.length; i++) {
-            if (Math.random() < Const.MUTATION_RATE) snake.model.biases3[i] += rand.nextGaussian() * 0.2;
+            if (Math.random() < Const.MUTATION_RATE) snake.model.biases3[i] += rand.nextGaussian() * 0.4;
             snake.model.biases3[i] = Math.max(-1.0, snake.model.biases3[i]);
             snake.model.biases3[i] = Math.min(1.0, snake.model.biases3[i]);
         }
@@ -58,12 +58,11 @@ public class Operators {
         Snake childA = new Snake();
         Snake childB = new Snake();
 
-        double u = Math.random();
-        double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
-                : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
-
         for (int i = 0; i < childA.model.weights1.length; i++)
             for (int j = 0; j < childA.model.weights1[i].length; j++) {
+                double u = Math.random();
+                double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
+                        : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
                 childA.model.weights1[i][j] = 0.5 * ((1.0 + beta) * pair.parentA.model.weights1[i][j]
                         + (1 - beta) * pair.parentB.model.weights1[i][j]);
                 childB.model.weights1[i][j] = 0.5*((1.0 + beta)*pair.parentB.model.weights1[i][j]
@@ -72,6 +71,9 @@ public class Operators {
 
         for (int i = 0; i < childA.model.weights2.length; i++)
             for (int j = 0; j < childA.model.weights2[i].length; j++) {
+                double u = Math.random();
+                double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
+                        : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
                 childA.model.weights2[i][j] = 0.5 * ((1 + beta) * pair.parentA.model.weights2[i][j]
                         + (1 - beta) * pair.parentB.model.weights2[i][j]);
                 childB.model.weights2[i][j] = 0.5*((1+beta)*pair.parentB.model.weights2[i][j]
@@ -80,6 +82,9 @@ public class Operators {
 
         for (int i = 0; i < childA.model.weights3.length; i++)
             for (int j = 0; j < childA.model.weights3[i].length; j++) {
+                double u = Math.random();
+                double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
+                        : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
                 childA.model.weights3[i][j] = 0.5 * ((1 + beta) * pair.parentA.model.weights3[i][j]
                         + (1 - beta) * pair.parentB.model.weights3[i][j]);
                 childB.model.weights3[i][j] = 0.5*((1+beta)*pair.parentB.model.weights3[i][j]
@@ -87,6 +92,9 @@ public class Operators {
             }
 
         for (int i = 0; i < childA.model.biases1.length; i++) {
+            double u = Math.random();
+            double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
+                    : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
             childA.model.biases1[i] = 0.5 * ((1 + beta) * pair.parentA.model.biases1[i]
                     + (1 - beta) * pair.parentB.model.biases1[i]);
             childB.model.biases1[i] = 0.5*((1+beta)*pair.parentB.model.biases1[i]
@@ -94,6 +102,9 @@ public class Operators {
         }
 
         for (int i = 0; i < childA.model.biases2.length; i++) {
+            double u = Math.random();
+            double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
+                    : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
             childA.model.biases2[i] = 0.5 * ((1 + beta) * pair.parentA.model.biases2[i]
                     + (1 - beta) * pair.parentB.model.biases2[i]);
             childB.model.biases2[i] = 0.5*((1+beta)*pair.parentB.model.biases2[i]
@@ -101,6 +112,9 @@ public class Operators {
         }
 
         for (int i = 0; i < childA.model.biases3.length; i++) {
+            double u = Math.random();
+            double beta = u <= 0.5 ? Math.pow(2.0*u, 1.0/(Const.ETA+1.0))
+                    : Math.pow(1.0/(2.0*(1.0-u)), 1.0/(Const.ETA+1.0));
             childA.model.biases3[i] = 0.5 * ((1 + beta) * pair.parentA.model.biases3[i]
                     + (1 - beta) * pair.parentB.model.biases3[i]);
             childB.model.biases3[i] = 0.5*((1+beta)*pair.parentB.model.biases3[i]
@@ -153,8 +167,8 @@ public class Operators {
         return child;
     }
 
-    public static Snake onePointRouletteWheel(Map<Snake, Double> map) {
-        /*main.Snake snake = null;
+    public static Snake onePointRouletteWheel(List<Snake> snakes) {
+        /*Snake snake = null;
 
         double random = Math.random();
         double chanceSum = 0;
@@ -168,11 +182,6 @@ public class Operators {
         }
         return snake;*/
 
-        List<Snake> snakes = new ArrayList<>();
-        for(Map.Entry<Snake, Double> entry : map.entrySet()) {
-            snakes.add(entry.getKey());
-        }
-        Collections.shuffle(snakes);
         double sum = snakes.stream().mapToDouble(Snake::fitness).sum();
         double rand = Math.random()*sum;
         double current = 0;

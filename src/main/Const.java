@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.*;
+
 public interface Const {
 
     int DELAY = 1;
@@ -10,5 +12,16 @@ public interface Const {
     int CHILDREN_NUMBER = 1000;
     double MUTATION_RATE = 0.05;
     double ETA = 100;
+
+    Point[] DELTA = new Point[] {
+        new Point(0,1),
+        new Point(1,1),
+        new Point(1,0),
+        new Point(1,-1),
+        new Point(0,-1),
+        new Point(-1,-1),
+        new Point(-1,0),
+        new Point(-1,1)
+    };
 
 }
