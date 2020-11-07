@@ -1,6 +1,7 @@
 package snake;
 
 import ai.NeuralNetwork;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import game.util.Game;
 
 import java.awt.*;
@@ -140,7 +141,7 @@ public class Snake {
         return Direction.values()[maxIndex];
     }
 
-    private void spawnSnake() {
+    public void spawnSnake() {
         snake = new ArrayList<>();
         Direction startDirection = Direction.values()[(int) (Math.random()*4)];
         int x = (int) (Math.random()*(Const.FIELD_SIZE-6)) + 3;

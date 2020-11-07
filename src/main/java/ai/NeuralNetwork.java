@@ -1,7 +1,5 @@
 package ai;
 
-import java.util.Arrays;
-
 public class NeuralNetwork {
 
     public double[][] weights1 = new double[32][20];

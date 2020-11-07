@@ -1,20 +1,24 @@
 package ai;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import snake.Const;
 import snake.Snake;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 public class Evolution {
     public List<Snake> population;
     private int currentSnake;
-    private int generationNumber;
+    public int generationNumber;
     private boolean generationDone;
 
     public Evolution() {
-        population = new ArrayList<Snake>();
+        population = new ArrayList<>();
         for (int i = 0; i < Const.PARENTS_NUMBER; i++) {
             population.add(new Snake());
         }
@@ -24,7 +28,6 @@ public class Evolution {
     }
 
     private void createNextPopulation() {
-        population.sort(Comparator.comparing(Snake::fitness));
         Map<Snake, Double> best = new LinkedHashMap<>();
         List<Snake> parents = new ArrayList<>();
 
@@ -43,7 +46,6 @@ public class Evolution {
             snakes.add(entry.getKey());
 
         Collections.shuffle(snakes);
-
         for (int i = 0; i < Const.CHILDREN_NUMBER/2; i++) {
             Snake parentA = Operators.onePointRouletteWheel(snakes);
             Snake parentB = Operators.onePointRouletteWheel(snakes);
@@ -60,15 +62,17 @@ public class Evolution {
 
     private Pair crossover(Pair pair) {
         double cross = Math.random();
-        //if(cross < 0.5)
+        if(cross < 0.5)
             return Operators.sbcCrossover(pair);
-        /*else
-            return new Pair(Operators.singlePointCrossover(pair), Operators.singlePointCrossover(pair));*/
+        else
+            return new Pair(Operators.singlePointCrossover(pair), Operators.singlePointCrossover(pair));
     }
 
     public void update() {
         if(generationDone) {
             for(Snake snake : population) snake.calculateFitness();
+            population.sort(Comparator.comparing(Snake::fitness));
+            saveSnake(population.get(population.size()-1));
             printGenerationMetrics();
             createNextPopulation();
 
@@ -100,5 +104,21 @@ public class Evolution {
                 population.stream().mapToDouble(Snake::fitness).sum()
                         / (Const.PARENTS_NUMBER+ Const.CHILDREN_NUMBER));
         System.out.println();
+    }
+
+    public void saveSnake(Snake snake) {
+        ObjectMapper mapper = new ObjectMapper();
+        int size = Objects.requireNonNull(new File("saves").list()).length;
+        if(generationNumber == 1) {
+            File file = new File("saves/run" + size);
+            file.mkdir();
+            size++;
+        }
+        try {
+            String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(snake.model);
+            FileWriter writer = new FileWriter("saves/run" + (size-1) + "/snake" + generationNumber + ".json");
+            writer.write(s);
+            writer.close();
+        } catch (IOException e) { e.printStackTrace(); }
     }
 }
