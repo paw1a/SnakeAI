@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    
-    private int moveCounter = 0;
+
     private boolean isEaten = false;
     public boolean isDead = false;
 
@@ -36,51 +35,38 @@ public class Snake {
     }
 
     public void update() {
-        if(moveCounter == Const.DELAY) {
-            Direction bestDir = getBestDirection();
-            if(Direction.isOpposite(head.dir, bestDir)) { isDead = true; return; }
-            head.dir = bestDir;
+        Direction bestDir = getBestDirection();
+        if(Direction.isOpposite(head.dir, bestDir)) { isDead = true; return; }
+        head.dir = bestDir;
+        Direction prevTileDir = head.dir;
 
-            Direction prevTileDir = head.dir;
-            for (int i = 0; i < snake.size(); i++) {
-                Tile currTile = snake.get(i);
-                switch (currTile.dir) {
-                    case UP: currTile.y--;break;
-                    case RIGHT: currTile.x++;break;
-                    case DOWN: currTile.y++;break;
-                    case LEFT: currTile.x--;break;
-                }
-                if (i > 0) {
-                    Direction temp = currTile.dir;
-                    currTile.dir = prevTileDir;
-                    prevTileDir = temp;
-                }
+        for (int i = 0; i < snake.size(); i++) {
+            Tile currTile = snake.get(i);
+            switch (currTile.dir) {
+                case UP: currTile.y--;break;
+                case RIGHT: currTile.x++;break;
+                case DOWN: currTile.y++;break;
+                case LEFT: currTile.x--;break;
             }
-
-            if(head.x < 0 || head.y < 0 || head.x > Const.FIELD_SIZE-1 || head.y > Const.FIELD_SIZE-1) isDead = true;
-            for(int i = 1; i < snake.size(); i++)
-                if (head.x == snake.get(i).x && head.y == snake.get(i).y) {
-                    isDead = true;
-                    break;
-                }
-
-            if(apple.x == head.x && apple.y == head.y) isEaten = true;
-            if(isEaten) eatApple();
-
-            totalSteps++;
-            dieSteps++;
-            if(dieSteps > Const.FIELD_SIZE*Const.FIELD_SIZE) {
-                //totalSteps = 0;
-                isDead = true;
-            }
-            moveCounter = 0;
-        } else {
-            moveCounter++;
-            for (Tile tile : snake) {
-                tile.drawX += (tile.x*Const.TILE_SIZE > tile.drawX ? (double) Const.TILE_SIZE / Const.DELAY : (double) -Const.TILE_SIZE / Const.DELAY);
-                tile.drawY += (tile.y*Const.TILE_SIZE > tile.drawY ? (double) Const.TILE_SIZE / Const.DELAY : (double) -Const.TILE_SIZE / Const.DELAY);
+            if (i > 0) {
+                Direction temp = currTile.dir;
+                currTile.dir = prevTileDir;
+                prevTileDir = temp;
             }
         }
+
+        if(head.x < 0 || head.y < 0 || head.x > Const.FIELD_SIZE-1 || head.y > Const.FIELD_SIZE-1) isDead = true;
+        for(int i = 1; i < snake.size(); i++)
+            if (head.x == snake.get(i).x && head.y == snake.get(i).y) {
+                isDead = true;
+                break;
+            }
+
+        if(apple.x == head.x && apple.y == head.y) isEaten = true;
+        if(isEaten) eatApple();
+        totalSteps++;
+        dieSteps++;
+        if(dieSteps > Const.FIELD_SIZE*Const.FIELD_SIZE) isDead = true;
     }
 
     public double fitness() {

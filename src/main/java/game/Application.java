@@ -62,25 +62,35 @@ public class Application extends JPanel implements Runnable {
         running = true;
 
         while(running) {
-            double targetTime = 1000000000d / config.getFPS();
-            long now = System.nanoTime();
-            delta += (now - lastTime) / targetTime;
-            lastTime = now;
-            while(delta >= 1) {
-                update();
-                delta--;
-            }
+            if(Game.conf.isDrawScreen()) {
+                double targetTime = 1000000000d / config.getFPS();
+                long now = System.nanoTime();
+                delta += (now - lastTime) / targetTime;
+                lastTime = now;
+                while (delta >= 1) {
+                    update();
+                    delta--;
+                }
 
-            if(config.isDrawScreen()) {
                 draw();
                 drawToScreen();
-            }
-            frames++;
+                frames++;
 
-            if(System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
-                if(config.isShowFPS()) System.out.println("FPS: " + frames);
-                frames = 0;
+                if (System.currentTimeMillis() - timer > 1000) {
+                    timer += 1000;
+                    if (config.isShowFPS()) System.out.println("FPS: " + frames);
+                    frames = 0;
+                }
+            } else {
+                int count = 0;
+                while(true) {
+                    if(!Game.conf.isDrawScreen()) {
+                        count++;
+                        if(count % 100 == 0) { draw(); drawToScreen(); }
+                        update();
+                    }
+                    else break;
+                }
             }
         }
     }

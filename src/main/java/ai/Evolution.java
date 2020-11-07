@@ -1,6 +1,7 @@
 package ai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import game.util.Game;
 import snake.Const;
 import snake.Snake;
 
@@ -16,6 +17,8 @@ public class Evolution {
     private int currentSnake;
     public int generationNumber;
     private boolean generationDone;
+    private int bestScore;
+    private double bestFitness;
 
     public Evolution() {
         population = new ArrayList<>();
@@ -80,25 +83,52 @@ public class Evolution {
             currentSnake = 0;
             generationDone = false;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
-            if(population.get(currentSnake).isDead) currentSnake++;
+            if(population.get(currentSnake).isDead) {
+                if(population.get(currentSnake).getScore() > bestScore)
+                    bestScore = population.get(currentSnake).getScore();
+                currentSnake++;
+            }
             else population.get(currentSnake).update();
             if(currentSnake >= population.size()) generationDone = true;
         }
     }
 
     public void draw(Graphics2D g) {
-        if(!generationDone) population.get(currentSnake).draw(g);
+        if(!Game.conf.isDrawScreen()) {
+            g.setColor(Color.decode("#616E54"));
+            g.fillRect(0, 0, Game.conf.getWidth(), Game.conf.getHeight());
+            g.setColor(Color.decode("#92A67F"));
+            g.fillRect(40,  40, 820, 820);
+            g.setColor(Color.decode("#0C0B08"));
+            g.setFont(g.getFont().deriveFont(80f));
+            g.drawString("PLAYING...", 200, 430);
+        }
+        if(!generationDone && !population.get(currentSnake).isDead && Game.conf.isDrawScreen())
+            population.get(currentSnake).draw(g);
+        g.setColor(Color.decode("#0C0B08"));
+        g.setFont(g.getFont().deriveFont(80f));
+        g.drawString("SNAKE", 950, 110);
+        g.setFont(g.getFont().deriveFont(40f));
+        g.setColor(Color.decode("#A5B696"));
+        g.drawString("Generation: " + generationNumber, 870, 300);
+        g.drawString("Snake: " + currentSnake, 870, 400);
+        g.drawString("Best score: " + bestScore, 870, 500);
+        g.drawString("MODE: " + (!Game.conf.isDrawScreen() ? "FAST" : "SLOW"), 870, 800);
+
+        g.setFont(g.getFont().deriveFont(20f));
+        g.drawString("SWITCH MODE: UP-FAST, DOWN-SLOW", 870, 850);
     }
 
     private void printGenerationMetrics() {
         System.out.println("Generation #" + generationNumber + ": ");
         System.out.println("Max score = " + population.stream().max(Comparator.comparing(Snake::getScore)).get().getScore());
         double maxFit = population.stream().max(Comparator.comparing(Snake::fitness)).get().fitness();
+        if(maxFit > bestFitness) bestFitness = maxFit;
         System.out.println("Max fitness = " + maxFit);
         System.out.println("Avg fitness = " +
                 population.stream().mapToDouble(Snake::fitness).sum()
