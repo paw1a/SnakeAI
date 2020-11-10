@@ -6,8 +6,8 @@ public class Main {
         Configuration conf = new Configuration();
         conf.setFPS(15);
         conf.setTitle("Snake");
-        conf.setWidth(1400);
+        conf.setWidth(1600);
         conf.setHeight(900);
-        new Application(conf).setScreen(new GameScreen());
+        new Application(conf).setScreen(new GameScreen(12, 1425));
     }
 }

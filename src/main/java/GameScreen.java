@@ -39,23 +39,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void update() {
+        if (Game.input.isKeyDown(KeyEvent.VK_UP)) Game.conf.setDrawScreen(false);
+        if (Game.input.isKeyDown(KeyEvent.VK_DOWN)) Game.conf.setDrawScreen(true);
+
         if(loadedSnake != null) {
             if(loadedSnake.isDead) {
                 loadedSnake = new Snake(loadedSnake.model);
                 loadedSnake.isDead = false;
             }
             loadedSnake.update();
-        } else {
-            evolution.update();
-            if (Game.input.isKeyDown(KeyEvent.VK_UP)) {
-                Game.conf.setDrawScreen(false);
-                Game.conf.setFPS(50000);
-            }
-            if (Game.input.isKeyDown(KeyEvent.VK_DOWN)) {
-                Game.conf.setDrawScreen(true);
-                Game.conf.setFPS(15);
-            }
-        }
+        } else evolution.update();
     }
 
     @Override
@@ -63,6 +56,17 @@ public class GameScreen implements Screen {
         g.setFont(font.deriveFont(40f));
         if(loadedSnake != null) {
             if (!loadedSnake.isDead) loadedSnake.draw(g);
+            g.setColor(Color.decode("#0C0B08"));
+            g.setFont(g.getFont().deriveFont(90f));
+            g.drawString("SNAKE", 970, 120);
+            g.setFont(g.getFont().deriveFont(40f));
+            g.setColor(Color.decode("#A5B696"));
+            g.drawString("Generation: BEST", 970, 300);
+            g.drawString("Snake: 0", 970, 400);
+            g.drawString("Best score: " + 100, 970, 500);
+            g.drawString("MODE: SLOW", 970, 800);
+            g.setFont(g.getFont().deriveFont(20f));
+            g.drawString("SWITCH MODE: UP-FAST, DOWN-SLOW", 970, 850);
         } else evolution.draw(g);
     }
 

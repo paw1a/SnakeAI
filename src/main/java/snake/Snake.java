@@ -1,7 +1,6 @@
 package snake;
 
 import ai.NeuralNetwork;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import game.util.Game;
 
 import java.awt.*;
@@ -10,13 +9,13 @@ import java.util.List;
 
 public class Snake {
 
-    private boolean isEaten = false;
-    public boolean isDead = false;
+    private boolean isEaten;
+    public boolean isDead;
 
-    private int score = 0;
-    private int totalSteps = 0;
-    private int dieSteps = 0;
-    private double fitness = 0;
+    private int score;
+    private int totalSteps;
+    private int dieSteps;
+    private double fitness;
 
     private List<Tile> snake;
     private Tile head;
@@ -66,11 +65,7 @@ public class Snake {
         if(isEaten) eatApple();
         totalSteps++;
         dieSteps++;
-        if(dieSteps > Const.FIELD_SIZE*Const.FIELD_SIZE) isDead = true;
-    }
-
-    public double fitness() {
-        return fitness;
+        if(dieSteps > Const.FIELD_SIZE*Const.FIELD_SIZE*2) isDead = true;
     }
 
     public void calculateFitness() {
@@ -163,6 +158,13 @@ public class Snake {
 
     private void spawnApple() {
         boolean correctPosition;
+        if(snake.size() == Const.FIELD_SIZE*Const.FIELD_SIZE) {
+            isDead = true;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ignored) {}
+            return;
+        }
         do {
             apple = new Point((int)(Math.random() * Const.FIELD_SIZE), (int)(Math.random() * Const.FIELD_SIZE));
             correctPosition = true;
@@ -209,9 +211,6 @@ public class Snake {
         g.setColor(Color.decode("#0C0B08"));
         g.setStroke(new BasicStroke(10f));
         for(Tile tile : snake) {
-            /*g.drawRect((int)tile.drawX + 40, (int)tile.drawY + 40, main.snake.Const.TILE_SIZE, main.snake.Const.TILE_SIZE);
-            g.fillRect((int)tile.drawX + main.snake.Const.TILE_SIZE / 10 + 40, (int)tile.drawY + main.snake.Const.TILE_SIZE / 10 + 40,
-                    main.snake.Const.TILE_SIZE - 2*main.snake.Const.TILE_SIZE/10, main.snake.Const.TILE_SIZE - 2*main.snake.Const.TILE_SIZE/10);*/
             g.drawRect(tile.x*Const.TILE_SIZE + 40, tile.y*Const.TILE_SIZE + 40, Const.TILE_SIZE, Const.TILE_SIZE);
             g.fillRect(tile.x*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40, tile.y*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40,
                     Const.TILE_SIZE - 2*Const.TILE_SIZE/10, Const.TILE_SIZE - 2*Const.TILE_SIZE/10);
@@ -219,4 +218,7 @@ public class Snake {
     }
 
     public int getScore() { return score; }
+    public double fitness() {
+        return fitness;
+    }
 }

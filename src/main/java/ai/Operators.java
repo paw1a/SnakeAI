@@ -12,7 +12,7 @@ public class Operators {
         for (int i = 0; i < snake.model.weights1.length; i++)
             for (int j = 0; j < snake.model.weights1[i].length; j++) {
                 if (Math.random() < Const.MUTATION_RATE)
-                    snake.model.weights1[i][j] += rand.nextGaussian() * 0.4;
+                    snake.model.weights1[i][j] += rand.nextGaussian() * 0.2;
                 snake.model.weights1[i][j] = Math.max(-1.0, snake.model.weights1[i][j]);
                 snake.model.weights1[i][j] = Math.min(1.0, snake.model.weights1[i][j]);
             }
@@ -20,7 +20,7 @@ public class Operators {
         for (int i = 0; i < snake.model.weights2.length; i++)
             for (int j = 0; j < snake.model.weights2[i].length; j++) {
                 if (Math.random() < Const.MUTATION_RATE)
-                    snake.model.weights2[i][j] += rand.nextGaussian() * 0.4;
+                    snake.model.weights2[i][j] += rand.nextGaussian() * 0.2;
                 snake.model.weights2[i][j] = Math.max(-1.0, snake.model.weights2[i][j]);
                 snake.model.weights2[i][j] = Math.min(1.0, snake.model.weights2[i][j]);
             }
@@ -28,25 +28,25 @@ public class Operators {
         for (int i = 0; i < snake.model.weights3.length; i++)
             for (int j = 0; j < snake.model.weights3[i].length; j++) {
                 if (Math.random() < Const.MUTATION_RATE)
-                    snake.model.weights3[i][j] += rand.nextGaussian() * 0.4;
+                    snake.model.weights3[i][j] += rand.nextGaussian() * 0.2;
                 snake.model.weights3[i][j] = Math.max(-1.0, snake.model.weights3[i][j]);
                 snake.model.weights3[i][j] = Math.min(1.0, snake.model.weights3[i][j]);
             }
 
         for (int i = 0; i < snake.model.biases1.length; i++) {
-            if (Math.random() < Const.MUTATION_RATE) snake.model.biases1[i] += rand.nextGaussian() * 0.4;
+            if (Math.random() < Const.MUTATION_RATE) snake.model.biases1[i] += rand.nextGaussian() * 0.2;
             snake.model.biases1[i] = Math.max(-1.0, snake.model.biases1[i]);
             snake.model.biases1[i] = Math.min(1.0, snake.model.biases1[i]);
         }
 
         for (int i = 0; i < snake.model.biases2.length; i++) {
-            if (Math.random() < Const.MUTATION_RATE) snake.model.biases2[i] += rand.nextGaussian() * 0.4;
+            if (Math.random() < Const.MUTATION_RATE) snake.model.biases2[i] += rand.nextGaussian() * 0.2;
             snake.model.biases2[i] = Math.max(-1.0, snake.model.biases2[i]);
             snake.model.biases2[i] = Math.min(1.0, snake.model.biases2[i]);
         }
 
         for (int i = 0; i < snake.model.biases3.length; i++) {
-            if (Math.random() < Const.MUTATION_RATE) snake.model.biases3[i] += rand.nextGaussian() * 0.4;
+            if (Math.random() < Const.MUTATION_RATE) snake.model.biases3[i] += rand.nextGaussian() * 0.2;
             snake.model.biases3[i] = Math.max(-1.0, snake.model.biases3[i]);
             snake.model.biases3[i] = Math.min(1.0, snake.model.biases3[i]);
         }
@@ -168,20 +168,6 @@ public class Operators {
     }
 
     public static Snake onePointRouletteWheel(List<Snake> snakes) {
-        /*snake.Snake snake = null;
-
-        double random = Math.random();
-        double chanceSum = 0;
-
-        for(Map.Entry<main.snake.Snake, Double> entry : map.entrySet()) {
-            chanceSum += entry.getValue();
-            if(random < chanceSum) {
-                snake = entry.getKey();
-                break;
-            }
-        }
-        return snake;*/
-
         double sum = snakes.stream().mapToDouble(Snake::fitness).sum();
         double rand = Math.random()*sum;
         double current = 0;

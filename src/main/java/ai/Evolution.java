@@ -18,7 +18,6 @@ public class Evolution {
     public int generationNumber;
     private boolean generationDone;
     private int bestScore;
-    private double bestFitness;
 
     public Evolution() {
         population = new ArrayList<>();
@@ -56,7 +55,6 @@ public class Evolution {
             population.add(mutate(children.parentA));
             population.add(mutate(children.parentB));
         }
-        Collections.shuffle(population);
     }
 
     private Snake mutate(Snake snake) {
@@ -64,18 +62,15 @@ public class Evolution {
     }
 
     private Pair crossover(Pair pair) {
-        double cross = Math.random();
-        if(cross < 0.5)
-            return Operators.sbcCrossover(pair);
-        else
-            return new Pair(Operators.singlePointCrossover(pair), Operators.singlePointCrossover(pair));
+        if(Math.random() < 0.5) return Operators.sbcCrossover(pair);
+        else return new Pair(Operators.singlePointCrossover(pair), Operators.singlePointCrossover(pair));
     }
 
     public void update() {
         if(generationDone) {
-            for(Snake snake : population) snake.calculateFitness();
+            for (Snake snake : population) snake.calculateFitness();
             population.sort(Comparator.comparing(Snake::fitness));
-            saveSnake(population.get(population.size()-1));
+            saveSnake(population.get(population.size() - 1), generationNumber);
             printGenerationMetrics();
             createNextPopulation();
 
@@ -84,21 +79,24 @@ public class Evolution {
             generationDone = false;
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException e) { e.printStackTrace(); }
         } else {
             if(population.get(currentSnake).isDead) {
+                //if(population.get(currentSnake).getScore() == Const.FIELD_SIZE*Const.FIELD_SIZE-3)
+                    //System.out.println("Best snake generation = " + generationNumber);
                 if(population.get(currentSnake).getScore() > bestScore)
                     bestScore = population.get(currentSnake).getScore();
                 currentSnake++;
-            }
-            else population.get(currentSnake).update();
+            } else population.get(currentSnake).update();
+
             if(currentSnake >= population.size()) generationDone = true;
         }
     }
 
     public void draw(Graphics2D g) {
+        if(!generationDone && !population.get(currentSnake).isDead && Game.conf.isDrawScreen())
+            population.get(currentSnake).draw(g);
+
         if(!Game.conf.isDrawScreen()) {
             g.setColor(Color.decode("#616E54"));
             g.fillRect(0, 0, Game.conf.getWidth(), Game.conf.getHeight());
@@ -108,27 +106,24 @@ public class Evolution {
             g.setFont(g.getFont().deriveFont(80f));
             g.drawString("PLAYING...", 200, 430);
         }
-        if(!generationDone && !population.get(currentSnake).isDead && Game.conf.isDrawScreen())
-            population.get(currentSnake).draw(g);
+
         g.setColor(Color.decode("#0C0B08"));
-        g.setFont(g.getFont().deriveFont(80f));
-        g.drawString("SNAKE", 950, 110);
+        g.setFont(g.getFont().deriveFont(90f));
+        g.drawString("SNAKE", 970, 120);
         g.setFont(g.getFont().deriveFont(40f));
         g.setColor(Color.decode("#A5B696"));
-        g.drawString("Generation: " + generationNumber, 870, 300);
-        g.drawString("Snake: " + currentSnake, 870, 400);
-        g.drawString("Best score: " + bestScore, 870, 500);
-        g.drawString("MODE: " + (!Game.conf.isDrawScreen() ? "FAST" : "SLOW"), 870, 800);
-
+        g.drawString("Generation: " + generationNumber, 970, 300);
+        g.drawString("Snake: " + currentSnake, 970, 400);
+        g.drawString("Best score: " + (bestScore+3), 970, 500);
+        g.drawString("MODE: " + (!Game.conf.isDrawScreen() ? "FAST" : "SLOW"), 970, 800);
         g.setFont(g.getFont().deriveFont(20f));
-        g.drawString("SWITCH MODE: UP-FAST, DOWN-SLOW", 870, 850);
+        g.drawString("SWITCH MODE: UP-FAST, DOWN-SLOW", 970, 850);
     }
 
     private void printGenerationMetrics() {
         System.out.println("Generation #" + generationNumber + ": ");
         System.out.println("Max score = " + population.stream().max(Comparator.comparing(Snake::getScore)).get().getScore());
         double maxFit = population.stream().max(Comparator.comparing(Snake::fitness)).get().fitness();
-        if(maxFit > bestFitness) bestFitness = maxFit;
         System.out.println("Max fitness = " + maxFit);
         System.out.println("Avg fitness = " +
                 population.stream().mapToDouble(Snake::fitness).sum()
@@ -136,7 +131,7 @@ public class Evolution {
         System.out.println();
     }
 
-    public void saveSnake(Snake snake) {
+    public static void saveSnake(Snake snake, int generationNumber) {
         ObjectMapper mapper = new ObjectMapper();
         int size = Objects.requireNonNull(new File("saves").list()).length;
         if(generationNumber == 1) {

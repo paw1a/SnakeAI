@@ -86,10 +86,9 @@ public class Application extends JPanel implements Runnable {
                 while(true) {
                     if(!Game.conf.isDrawScreen()) {
                         count++;
-                        if(count % 100 == 0) { draw(); drawToScreen(); }
                         update();
-                    }
-                    else break;
+                        if(count % 100 == 0) { draw(); drawToScreen(); }
+                    } else break;
                 }
             }
         }
