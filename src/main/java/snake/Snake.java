@@ -201,18 +201,18 @@ public class Snake {
         g.setColor(Color.decode("#616E54"));
         g.fillRect(0, 0, Game.conf.getWidth(), Game.conf.getHeight());
         g.setColor(Color.decode("#92A67F"));
-        g.fillRect(40, 40, 820, 820);
+        g.fillRect(50, 50, 800, 800);
 
         g.setColor(Color.decode("#87382F"));
-        g.drawRect(apple.x*Const.TILE_SIZE + 40, apple.y*Const.TILE_SIZE + 40, Const.TILE_SIZE, Const.TILE_SIZE);
-        g.fillRect(apple.x*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40, apple.y*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40,
+        g.drawRect(apple.x*Const.TILE_SIZE + 50, apple.y*Const.TILE_SIZE + 50, Const.TILE_SIZE, Const.TILE_SIZE);
+        g.fillRect(apple.x*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 50, apple.y*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 50,
                 Const.TILE_SIZE - 2*Const.TILE_SIZE/10, Const.TILE_SIZE - 2*Const.TILE_SIZE/10);
 
         g.setColor(Color.decode("#0C0B08"));
-        g.setStroke(new BasicStroke(10f));
+        g.setStroke(new BasicStroke(9f));
         for(Tile tile : snake) {
-            g.drawRect(tile.x*Const.TILE_SIZE + 40, tile.y*Const.TILE_SIZE + 40, Const.TILE_SIZE, Const.TILE_SIZE);
-            g.fillRect(tile.x*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40, tile.y*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 40,
+            g.drawRect(tile.x*Const.TILE_SIZE + 50, tile.y*Const.TILE_SIZE + 50, Const.TILE_SIZE, Const.TILE_SIZE);
+            g.fillRect(tile.x*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 50, tile.y*Const.TILE_SIZE + Const.TILE_SIZE / 10 + 50,
                     Const.TILE_SIZE - 2*Const.TILE_SIZE/10, Const.TILE_SIZE - 2*Const.TILE_SIZE/10);
         }
     }

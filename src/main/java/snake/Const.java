@@ -4,8 +4,7 @@ import java.awt.*;
 
 public interface Const {
 
-    int DELAY = 1;
-    int TILE_SIZE = 82;
+    int TILE_SIZE = 800/Const.FIELD_SIZE;
     int FIELD_SIZE = 10;
 
     int PARENTS_NUMBER = 500;
